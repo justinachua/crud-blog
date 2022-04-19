@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +22,11 @@ function Home({ isAuth }) {
 
   let navigate = useNavigate();
 
-  const deletePost = async (id) => {
+  const deletePost = useCallback(async (id) => {
     const postDoc = doc(db, "posts", id);
     await deleteDoc(postDoc);
-  };
+  }, [db]);
+
   useEffect(() => {
     const getPosts = async () => {
       const data = await getDocs(postsCollectionRef);
@@ -43,7 +44,8 @@ function Home({ isAuth }) {
           return (
             <Center py={6}>
               <Box
-                maxW={'900px'}
+                w={'600px'}
+                // maxW={'900px'}
                 boxShadow={'2xl'}
                 rounded={'md'}
                 p={6}
@@ -95,9 +97,9 @@ function Home({ isAuth }) {
               </Box>
           </Center>
 
-            
 
-          
+
+
             // <div className="post">
             //   <div className="postHeader">
             //     <div className="title">
@@ -120,8 +122,8 @@ function Home({ isAuth }) {
 
 
             //   </div>
-              
-              
+
+
             //   <div className="postTextContainerHome">
             //   {() => {
             //       if(post.postText == "aaaa"){
@@ -132,14 +134,14 @@ function Home({ isAuth }) {
             //       }
             //     }}
 
-                
+
             //     {post.postText} </div>
 
             //     <p><b>Created at</b>: {post.created_at}</p>
             //     {post.updated_at && ( <p><b>Updated at</b>: {post.updated_at}</p>)}
             //     <h3>@{post.author_name}</h3>
             // </div>
-            
+
 
           );
         }

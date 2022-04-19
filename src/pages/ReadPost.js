@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
@@ -11,10 +11,11 @@ function ReadPost({ isAuth }) {
   let id = url.split("/").pop();
   let navigate = useNavigate();
 
-  const deletePost = async (id) => {
+  const deletePost = useCallback(async (id) => {
     const postDoc = doc(db, "posts", id);
     await deleteDoc(postDoc);
-  };
+  }, [db]);
+
   useEffect(() => {
     const getPosts = async () => {
       const data = await getDocs(postsCollectionRef);
@@ -23,7 +24,6 @@ function ReadPost({ isAuth }) {
 
     getPosts();
   }, [deletePost]);
-
 
   return (
     <div className="homePage">

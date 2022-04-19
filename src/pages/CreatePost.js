@@ -35,7 +35,6 @@ function CreatePost({ isAuth }) {
       author_name: auth.currentUser.displayName,
       author_id: auth.currentUser.uid ,
       created_at: d.toLocaleString(),
-      // updated_at: d.toLocaleString(),
     });
     navigate("/");
   };
@@ -62,7 +61,7 @@ function CreatePost({ isAuth }) {
             Create a new post
           </Heading>
           <Text fontSize={'lg'} color={'gray.600'}>
-            something something 
+            something something
           </Text>
         </Stack>
         <Box
