@@ -2,8 +2,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
-import Markdown from "marked-react";
-import { render } from "@testing-library/react";
 import {
   Box,
   Button,
@@ -45,7 +43,6 @@ function Home({ isAuth }) {
             <Center py={6}>
               <Box
                 w={'600px'}
-                // maxW={'900px'}
                 boxShadow={'2xl'}
                 rounded={'md'}
                 p={6}
@@ -58,6 +55,10 @@ function Home({ isAuth }) {
                     {post.title}
                   </Heading>
 
+                  <Button size='sm' align='right' onClick={()=>{
+                    navigate(`/read/${post.id}`)
+                  }}>Read</Button>
+
                   {isAuth && post.author_id === auth.currentUser.uid && (
                     <Button size='sm' align='right'
                       onClick={() => {
@@ -67,10 +68,6 @@ function Home({ isAuth }) {
                       Edit
                     </Button>
                   )}
-
-                  <Button size='sm' align='right' onClick={()=>{
-                    navigate(`/read/${post.id}`)
-                  }}>Read</Button>
 
                   {isAuth && post.author_id === auth.currentUser.uid && (
                     <Button size='sm' align='right'
@@ -82,7 +79,7 @@ function Home({ isAuth }) {
                   )}
                 </Stack>
 
-                <Text color={'gray.500'} mt={4}>{post.postText}</Text>
+                <Text color={'gray.500'} mt={4} noOfLines={2}>{post.postText}</Text>
                 <Stack mt={6} direction={'row'} spacing={4} align={'center'}>
                   <Avatar
                     src={'https://images.unsplash.com/photo-1554034483-04fda0d3507b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'}
@@ -96,53 +93,6 @@ function Home({ isAuth }) {
                 </Stack>
               </Box>
           </Center>
-
-
-
-
-            // <div className="post">
-            //   <div className="postHeader">
-            //     <div className="title">
-
-            //       <h1><Markdown>{post.title}</Markdown></h1>
-            //     </div>
-
-            //     <div className="editPost">
-            //       {isAuth && post.author_id === auth.currentUser.uid && (
-            //         <button
-            //           onClick={() => {
-            //             navigate(`/edit/${post.id}`);
-            //           }}
-            //         >
-            //           {" "}
-            //           &#9998;
-            //         </button>
-            //       )}
-            //     </div>
-
-
-            //   </div>
-
-
-            //   <div className="postTextContainerHome">
-            //   {() => {
-            //       if(post.postText == "aaaa"){
-            //         return("asdf");
-            //       }
-            //       else{
-            //         return(post.postText);
-            //       }
-            //     }}
-
-
-            //     {post.postText} </div>
-
-            //     <p><b>Created at</b>: {post.created_at}</p>
-            //     {post.updated_at && ( <p><b>Updated at</b>: {post.updated_at}</p>)}
-            //     <h3>@{post.author_name}</h3>
-            // </div>
-
-
           );
         }
         })}

@@ -8,15 +8,12 @@ import {
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
-  HStack,
-  InputRightElement,
+  Textarea,
   Stack,
   Button,
   Heading,
   Text,
   useColorModeValue,
-  Link,
 } from '@chakra-ui/react';
 
 function CreatePost({ isAuth }) {
@@ -51,60 +48,47 @@ function CreatePost({ isAuth }) {
   return (
     <div>
       <Flex
-      minH={'50vh'}
-      align={'center'}
-      justify={'center'}
-      >
-      <Stack maxW={'lg'} >
-        <Stack align={'center'}>
-          <Heading fontSize={'4xl'} textAlign={'center'}>
-            Create a new post
-          </Heading>
-          <Text fontSize={'lg'} color={'gray.600'}>
-            something something
-          </Text>
-        </Stack>
-        <Box
-          rounded={'lg'}
-          boxShadow={'lg'}
-          p={8}
-          >
-          <Stack spacing={4}>
-            <FormControl id="email" isRequired>
-              <FormLabel>Title</FormLabel>
-              <Input type="title" placeholder="Title..."
-            onChange={(event) => {
-              setTitle(event.target.value);
-            }} />
-            </FormControl>
-            <FormControl id="content" isRequired>
-              <FormLabel>Content</FormLabel>
-              <InputGroup>
-                <Input placeholder="Post..."
-            onChange={(event) => {
-              setPostText(event.target.value);
-            }}
-                 />
-              </InputGroup>
-            </FormControl>
-            <Stack spacing={10} pt={2}>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                bg={'blue.400'}
-                color={'white'}
-                _hover={{
-                  bg: 'blue.500',
-                }}
-                onClick={createPost}
-                >
-                Publish
-              </Button>
-            </Stack>
+        mt={5}
+        minH={'55vh'}
+        justify={'center'}
+        >
+        <Stack w={'600px'}>
+          <Stack align={'center'}>
+            <Heading fontSize={'2xl'} textAlign={'center'}>
+              Create a new post
+            </Heading>
           </Stack>
-        </Box>
-      </Stack>
-    </Flex>
+          <Box
+            rounded={'lg'}
+            boxShadow={'lg'}
+            p={8}
+            >
+            <Stack spacing={4}>
+              <FormControl id="email" isRequired>
+                <FormLabel>Title</FormLabel>
+                <Input type="title" placeholder="Title..."
+                  onChange={(event) => {
+                    setTitle(event.target.value);
+                  }} />
+              </FormControl>
+
+              <FormControl id="content" isRequired>
+                <FormLabel>Content</FormLabel>
+                <Textarea placeholder="Content..."
+                  onChange={(event) => {
+                    setPostText(event.target.value);
+                  }} />
+              </FormControl>
+
+              <Stack spacing={10} pt={2}>
+                <Button loadingText="Submitting" size="lg" bg={'blue.400'} color={'white'} _hover={{bg: 'blue.500',}} onClick={createPost}>
+                  Publish
+                </Button>
+              </Stack>
+            </Stack>
+          </Box>
+        </Stack>
+      </Flex>
     </div>
   );
 }

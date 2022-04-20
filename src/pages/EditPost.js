@@ -2,6 +2,19 @@ import React, { useState, useEffect } from "react";
 import { updateDoc, getDocs, collection, doc } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
+import {
+  Flex,
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Textarea,
+  Stack,
+  Button,
+  Heading,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 function EditPost({ isAuth }) {
   const [postLists, setPostList] = useState([]);
@@ -38,42 +51,66 @@ function EditPost({ isAuth }) {
   }, []);
 
   return (
-    <div className="createPostPage">
+    <div>
       {postLists.map((post) => {
         if (post.id === id) {
-          // only set state if its empty
           if(title === '' && postText === '') {
             setTitle(post.title);
             setPostText(post.postText);
           }
           return (
-            <div className="cpContainer">
-              <h1>Edit Post</h1>
-              <div className="inputGp">
-                <label> Title:</label>
-                <input
-                  placeholder="Title..."
-                  defaultValue={post.title}
-                  onChange={(event) => {
-                    setTitle(event.target.value);
-                  }}
-                />
-              </div>
-              <div className="inputGp">
-                <label> Post:</label>
-                <textarea
-                  placeholder="Post..."
-                  defaultValue={post.postText}
-                  onChange={(event) => {
-                    setPostText(event.target.value);
-                  }}
-                />
-              </div>
-              <button onClick={editPost}> Edit Post</button>
-            </div>
+            <Flex
+              mt={5}
+              minH={'55vh'}
+              justify={'center'}
+              >
+              <Stack w={'900px'}>
+                <Stack align={'center'}>
+                  <Heading fontSize={'2xl'} textAlign={'center'}>
+                    Edit your post
+                  </Heading>
+                </Stack>
+                <Box
+                  rounded={'lg'}
+                  boxShadow={'lg'}
+                  p={8}
+                  >
+                  <Stack spacing={4}>
+                    <FormControl id="email" isRequired>
+                      <FormLabel>Title</FormLabel>
+                      <Input type="title" placeholder="Title..."
+                        defaultValue={post.title}
+                        onChange={(event) => {
+                          setTitle(event.target.value);
+                        }}
+                      />
+                    </FormControl>
+
+                    <FormControl id="content" isRequired>
+                      <FormLabel>Content</FormLabel>
+                      <Textarea 
+                        placeholder="Content..."
+                        defaultValue={post.postText}
+                        onChange={(event) => {
+                          setPostText(event.target.value);
+                        }}
+                        />
+                    </FormControl>
+
+                    <Stack spacing={10} pt={2}>
+                      <Button loadingText="Submitting" size="lg" bg={'blue.400'} color={'white'} _hover={{bg: 'blue.500',}} 
+                      onClick={editPost}
+                      >
+                        Publish
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Stack>
+            </Flex>
           );}
         })}
-      </div>
+    </div>
     );
 }
 

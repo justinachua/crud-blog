@@ -8,6 +8,14 @@ import Login from "./pages/Login";
 import { useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  Stack,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
@@ -16,24 +24,60 @@ function App() {
     signOut(auth).then(() => {
       localStorage.clear();
       setIsAuth(false);
-      window.location.pathname = "/login";
+      window.location.pathname = "/";
     });
   };
 
   return (
     <Router>
       <nav>
-        <Link to="/"> Home </Link>
+        <Box>
+          <Flex
+            bg={useColorModeValue('white', 'gray.800')}
+            color={useColorModeValue('gray.600', 'white')}
+            minH={'60px'}
+            py={{ base: 2 }}
+            px={{ base: 4 }}
+            borderBottom={1}
+            borderStyle={'solid'}
+            borderColor={useColorModeValue('gray.200', 'gray.900')}
+            align={'center'}>
 
-        {!isAuth ? (
-          <Link to="/login"> Login </Link>
-        ) : (
-          <>
-            <Link to="/createpost"> Create Post </Link>
-            <button onClick={signUserOut}> Log Out</button>
-          </>
-        )}
+            <Flex flex={{ base: 1 }}>
+              <Text
+                fontFamily={'heading'}
+                color={useColorModeValue('gray.800', 'white')}
+                >
+                A minimalist blog
+              </Text>
+            </Flex>
+
+
+
+
+
+              
+            
+            <Stack
+              justify={'flex-end'}
+              direction={'row'}
+              spacing={6}>
+
+              <Link to="/"> Home </Link> 
+
+              {!isAuth ? (
+                <Link to="/login"> Login </Link>
+              ) : (
+                <>
+                  <Link to="/createpost"> Create Post </Link>
+                  <button onClick={signUserOut}> Log Out</button>
+                </>
+              )}
+            </Stack>
+          </Flex>
+        </Box>
       </nav>
+ 
       <Routes>
         <Route path="/" element={<Home isAuth={isAuth} />} />
         <Route path="/createpost" element={<CreatePost isAuth={isAuth} />} />
