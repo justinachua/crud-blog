@@ -12,26 +12,32 @@ import {
   Box,
   Flex,
   Text,
-  Button,
   Stack,
   useColorModeValue,
 } from '@chakra-ui/react';
 
 function App() {
+  // Keeps track of whether or not the user is authenticated
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
 
   const signUserOut = () => {
     signOut(auth).then(() => {
+      // Clears the user's cookies stored in the localStorage since they won't be automatically cleared when the page is closed 
       localStorage.clear();
+      // Sets auth to false 
       setIsAuth(false);
+      // Redirects user to home upon logging out 
       window.location.pathname = "/";
     });
   };
 
   return (
     <Router>
+      {/* Header */}
       <nav>
         <Box>
+
+          {/* A minimalist blog  */}
           <Flex
             bg={useColorModeValue('white', 'gray.800')}
             color={useColorModeValue('gray.600', 'white')}
@@ -52,12 +58,7 @@ function App() {
               </Text>
             </Flex>
 
-
-
-
-
-              
-            
+            {/* Home, Create Post, & Log In/Out */}
             <Stack
               justify={'flex-end'}
               direction={'row'}
@@ -78,6 +79,7 @@ function App() {
         </Box>
       </nav>
  
+      {/* Routing for all pages  */}
       <Routes>
         <Route path="/" element={<Home isAuth={isAuth} />} />
         <Route path="/createpost" element={<CreatePost isAuth={isAuth} />} />

@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
-import Markdown from "marked-react";
 import {
   Box,
   Button,
@@ -11,13 +10,12 @@ import {
   Text,
   Stack,
   Avatar,
-  useColorModeValue,
-  Image
 } from '@chakra-ui/react';
 
 function ReadPost({ isAuth }) {
   const [postLists, setPostList] = useState([]);
   const postsCollectionRef = collection(db, "posts");
+  
   let url = window.location.href;
   let id = url.split("/").pop();
   let navigate = useNavigate();
@@ -25,6 +23,7 @@ function ReadPost({ isAuth }) {
   const deletePost = useCallback(async (id) => {
     const postDoc = doc(db, "posts", id);
     await deleteDoc(postDoc);
+    window.location.reload(false);
   }, [db]);
 
   useEffect(() => {
@@ -49,6 +48,7 @@ function ReadPost({ isAuth }) {
                 p={6}
                 overflow={'hidden'}>
 
+                {/* Post title   */}
                 <Stack direction={'row'} spacing={15}>
                   <Heading
                     fontSize={'2xl'}
@@ -56,6 +56,7 @@ function ReadPost({ isAuth }) {
                     {post.title}
                   </Heading>
 
+                  {/* Edit and Delete buttons if authenticated */}
                   {isAuth && post.author_id === auth.currentUser.uid && (
                     <Button size='sm' align='right'
                       onClick={() => {
@@ -76,6 +77,7 @@ function ReadPost({ isAuth }) {
                   )}
                 </Stack>
 
+                {/* Profile picture, author name, and created at / updated at time stamps  */}
                 <Stack mt={6} direction={'row'} spacing={4} align={'center'}>
                   <Avatar
                     src={'https://images.unsplash.com/photo-1554034483-04fda0d3507b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'}
@@ -88,6 +90,7 @@ function ReadPost({ isAuth }) {
                   </Stack>
                 </Stack>
 
+                {/* Post content  */}
                 <Text color={'gray.500'} mt={4}>{post.postText}</Text>
                 
               </Box>

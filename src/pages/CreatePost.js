@@ -12,20 +12,27 @@ import {
   Stack,
   Button,
   Heading,
-  Text,
-  useColorModeValue,
 } from '@chakra-ui/react';
 
+// Checks if you're authenticated before creating the post
 function CreatePost({ isAuth }) {
+  // Keeps track of title + content
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
-  let url = window.location.href;
-  let id = url.split("/").pop();
+  // postsCollectionRef is a reference to the collection in the Firestore db named "posts"
   const postsCollectionRef = collection(db, "posts");
   let navigate = useNavigate();
 
   const createPost = async () => {
+    // Ensures that both the title and content are present to create a post 
+    if (title == '' || postText == ''){
+      alert("You need to fill both title and content!");
+      // Returns early if otherwise
+      return;
+    }
+    // Creates a timestamp 
     const d = new Date();
+    // Adds the post to the Firestore db 
     await addDoc(postsCollectionRef, {
       title,
       postText,
@@ -37,13 +44,11 @@ function CreatePost({ isAuth }) {
   };
 
   useEffect(() => {
+    // Checks if authenticated => otherwise redirect to /login 
     if (!isAuth) {
       navigate("/login");
     }
   }, []);
-
-  const [showPassword, setShowPassword] = useState(false);
-
 
   return (
     <div>
@@ -52,6 +57,7 @@ function CreatePost({ isAuth }) {
         minH={'55vh'}
         justify={'center'}
         >
+        {/* Create a new post  */}
         <Stack w={'600px'}>
           <Stack align={'center'}>
             <Heading fontSize={'2xl'} textAlign={'center'}>
@@ -63,7 +69,9 @@ function CreatePost({ isAuth }) {
             boxShadow={'lg'}
             p={8}
             >
+            
             <Stack spacing={4}>
+              {/* Set title  */}
               <FormControl id="email" isRequired>
                 <FormLabel>Title</FormLabel>
                 <Input type="title" placeholder="Title..."
@@ -72,6 +80,7 @@ function CreatePost({ isAuth }) {
                   }} />
               </FormControl>
 
+              {/* Set content  */}
               <FormControl id="content" isRequired>
                 <FormLabel>Content</FormLabel>
                 <Textarea placeholder="Content..."
@@ -80,6 +89,7 @@ function CreatePost({ isAuth }) {
                   }} />
               </FormControl>
 
+              {/* Publish  */}
               <Stack spacing={10} pt={2}>
                 <Button loadingText="Submitting" size="lg" bg={'blue.400'} color={'white'} _hover={{bg: 'blue.500',}} onClick={createPost}>
                   Publish
